@@ -47,10 +47,10 @@ Include the library from a CDN like **unpkg** or **jsDelivr** in your HTML file.
 
 ```html
 <!-- Use a specific version for production -->
-<script src="https://unpkg.com/markdown-pdfjs@1.0.0/dist/markdown-pdf.umd.js"></script>
+<script src="https://unpkg.com/markdown-pdfjs@1.0.1/dist/markdown-pdf.umd.js"></script>
 
 <!-- OR from jsDelivr -->
-<script src="https://cdn.jsdelivr.net/npm/markdown-pdfjs@1.0.0/dist/markdown-pdf.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markdown-pdfjs@1.0.1/dist/markdown-pdf.umd.js"></script>
 ```
 
 ### via NPM
@@ -84,7 +84,7 @@ Here is a complete, basic example of how to add a "Download PDF" button to your 
     <button id="downloadButton">Download Report as PDF</button>
 
     <!-- 1. Include the library from a CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/markdown-pdfjs@1.0.0/dist/markdown-pdf.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-pdfjs@1.0.1/dist/markdown-pdf.umd.js"></script>
 
     <!-- 2. Use the library in your application script -->
     <script>
