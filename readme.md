@@ -253,6 +253,6 @@ Distributed under the MIT License. See `LICENSE` file for more information.
 [npm-downloads-shield]: https://img.shields.io/npm/dm/markdown-pdfjs.svg?style=for-the-badge
 [npm-downloads-url]: https://www.npmjs.com/package/markdown-pdfjs
 [license-shield]: https://img.shields.io/github/license/seenmttai/markdown-pdfjs.svg?style=for-the-badge
-[license-url]: https://github.com/seenmttai/markdown-pdfjs/blob/main/LICENSE
+[license-url]: https://github.com/seenmttai/markdown-pdfjs/blob/master/LICENSE
 [bundle-size-shield]: https://img.shields.io/bundlephobia/minzip/markdown-pdfjs?style=for-the-badge
 [bundle-size-url]: https://bundlephobia.com/result?p=markdown-pdfjs
