@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Markdown-PDF.js Playground</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@16.4.1/lib/marked.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://unpkg.com/markdown-pdfjs@1.0.0/dist/markdown-pdf.umd.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1>Markdown → PDF.js</h1>
+    <p class="sub">Robust, easy-to-use library built on marked.js and html2pdf.js</p>
+  </header>
+
+  <main class="container">
+    <section class="playground">
+      <div class="panel">
+        <label for="md-input">Markdown</label>
+        <textarea id="md-input" class="mono" rows="16"></textarea>
+        <div class="controls">
+          <div class="group">
+            <label for="filename">Filename</label>
+            <input id="filename" type="text" value="document.pdf" />
+          </div>
+          <div class="group">
+            <label for="format">Page format</label>
+            <select id="format">
+              <option value="a4" selected>A4</option>
+              <option value="letter">Letter</option>
+              <option value="legal">Legal</option>
+              <option value="tabloid">Tabloid</option>
+            </select>
+          </div>
+          <div class="group">
+            <label for="orientation">Orientation</label>
+            <select id="orientation">
+              <option value="portrait" selected>Portrait</option>
+              <option value="landscape">Landscape</option>
+            </select>
+          </div>
+          <div class="group">
+            <label for="margin">Margin (mm)</label>
+            <input id="margin" type="number" min="0" step="1" value="10" />
+          </div>
+        </div>
+        <div class="controls">
+          <div class="group grow">
+            <label for="header-input">Header (optional HTML)</label>
+            <input id="header-input" type="text" placeholder="<div>Title • Page {{page}}</div>" />
+          </div>
+          <div class="group grow">
+            <label for="footer-input">Footer (optional HTML)</label>
+            <input id="footer-input" type="text" placeholder="<div>© 2025</div>" />
+          </div>
+        </div>
+        <div class="buttons">
+          <button id="update-preview">Update Preview</button>
+          <button id="download-pdf" class="primary">Download PDF</button>
+        </div>
+      </div>
+      <div class="panel">
+        <label>Preview</label>
+        <div id="preview" class="preview"></div>
+      </div>
+    </section>
+
+    <section class="docs">
+      <h2>Documentation</h2>
+
+      <h3>Install</h3>
+      <pre class="mono small"><code>&lt;script src="https://cdn.jsdelivr.net/npm/marked@16.4.1/lib/marked.umd.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://unpkg.com/markdown-pdfjs@1.0.0/dist/markdown-pdf.umd.js"&gt;&lt;/script&gt;</code></pre>
+
+      <h3>Usage</h3>
+      <pre class="mono small"><code>
+const el = document.getElementById('target');
+MarkdownPDFJS.render('# Hello', el, { css: '.mdpdf h1 {font-size: 20px}' });
+
+await MarkdownPDFJS.download('# Title\\nSome text.', {
+  filename: 'doc.pdf',
+  format: 'a4',
+  orientation: 'portrait',
+  margin: 12,
+  header: '&lt;div class="header"&gt;My Report&lt;/div&gt;',
+  footer: '&lt;div class="footer"&gt;Page {{page}} / {{total}}&lt;/div&gt;',
+});
+
+const rendered = MarkdownPDFJS.render('# Content', el);
+await MarkdownPDFJS.downloadFromElement(rendered, { filename: 'from-element.pdf' });</code></pre>
+
+      <h3>API</h3>
+      <ul>
+        <li>MarkdownPDFJS.render(markdown, container, options?) → HTMLElement
+          <ul>
+            <li>Renders sanitized HTML from markdown into container. Returns the root document element used for PDF.</li>
+          </ul>
+        </li>
+        <li>MarkdownPDFJS.download(markdown, options?) → Promise<void>
+          <ul>
+            <li>Converts markdown to PDF and triggers download.</li>
+          </ul>
+        </li>
+        <li>MarkdownPDFJS.downloadFromElement(element, options?) → Promise<void>
+          <ul>
+            <li>Generates a PDF from an element you already have.</li>
+          </ul>
+        </li>
+        <li>MarkdownPDFJS.configureMarked(options)
+          <ul>
+            <li>Set marked.js options globally (e.g., gfm, breaks).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Options</h3>
+      <ul>
+        <li>filename: string (default "document.pdf")</li>
+        <li>format: "a4" | "letter" | "legal" | "tabloid" (default "a4")</li>
+        <li>orientation: "portrait" | "landscape" (default "portrait")</li>
+        <li>margin: number in mm (default 10)</li>
+        <li>css: string of extra CSS to inject (optional)</li>
+        <li>header: string | (ctx) => string (optional, supports {{page}} and {{total}} placeholders)</li>
+        <li>footer: string | (ctx) => string (optional)</li>
+        <li>pagebreak: object passed to html2pdf (default { mode: ["css", "legacy"] })</li>
+        <li>html2canvas: object (override defaults like scale, useCORS)</li>
+        <li>image: object (type, quality)</li>
+      </ul>
+
+      <h3>Notes</h3>
+      <ul>
+        <li>Security: HTML produced from markdown is sanitized with DOMPurify.</li>
+        <li>Styling: Basic print styles and page-break controls are included. You can add your own via the css option.</li>
+        <li>Images: Use absolute or same-origin URLs to allow html2canvas to fetch with CORS.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script type="module">
+    const MarkdownPDFJS = window.MarkdownPDF; 
+
+    const mdInput = document.getElementById('md-input');
+    const preview = document.getElementById('preview');
+    const filename = document.getElementById('filename');
+    const format = document.getElementById('format');
+    const orientation = document.getElementById('orientation');
+    const margin = document.getElementById('margin');
+    const headerInput = document.getElementById('header-input');
+    const footerInput = document.getElementById('footer-input');
+
+    const sample = `# Markdown → PDF
+
+This library uses **marked.js** to parse markdown and **html2pdf.js** to generate a PDF.
+
+## Features
+- Sanitized HTML output
+- Header and footer support
+- Custom CSS injection
+- Page break utilities
+
+## Code
+\`\`\`js
+function hello() {
+  console.log('Hello PDF');
+}
+\`\`\`
+
+## List
+- One
+- Two
+- Three
+
+## Page Break
+Add \`.page-break\` to force breaks:
+<div class="page-break"></div>
+
+## Table
+| Name | Value |
+|------|-------|
+| A    | 1     |
+| B    | 2     |`;
+
+    mdInput.value = sample;
+
+    function buildOptions() {
+      const header = headerInput.value.trim() || null;
+      const footer = footerInput.value.trim() || null;
+      return {
+        filename: filename.value || 'document.pdf',
+        format: format.value,
+        orientation: orientation.value,
+        margin: Math.max(0, Number(margin.value) || 10),
+        header: header,
+        footer: footer,
+        css: `
+          .header, .footer { font-size: 10px; color: #777; }
+        `,
+      };
+    }
+
+    function updatePreview() {
+      preview.innerHTML = '';
+      try {
+        MarkdownPDFJS.render(mdInput.value, preview, buildOptions());
+      } catch (err) {
+        console.error('Preview error:', err);
+        const msg = document.createElement('div');
+        msg.style.color = '#b00020';
+        msg.style.padding = '8px';
+        msg.textContent = `Preview failed: ${err?.message || 'Unknown error'}`;
+        preview.appendChild(msg);
+      }
+    }
+
+    document.getElementById('update-preview').addEventListener('click', updatePreview);
+    document.getElementById('download-pdf').addEventListener('click', async () => {
+      const opts = buildOptions();
+      try {
+        await MarkdownPDFJS.download(mdInput.value, opts);
+      } catch (err) {
+        console.error('Download error:', err);
+        alert(`Download failed: ${err?.message || 'Unknown error'}`);
+      }
+    });
+
+    updatePreview();
+  </script>
+</body>
+</html>
+
