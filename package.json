@@ -1,0 +1,28 @@
+{
+  "name": "markdown-pdfjs",
+  "version": "1.0.0",
+  "description": "A robust, easy-to-use library to convert Markdown to PDF using marked.js, html2pdf.js, and DOMPurify.",
+  "main": "dist/markdown-pdf.umd.js",
+  "module": "dist/markdown-pdf.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/markdown-pdf.es.js",
+      "require": "./dist/markdown-pdf.umd.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "vite build"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
+  },
+  "dependencies": {
+    "marked": "^16.4.1",
+    "dompurify": "^3.2.6",
+    "html2pdf.js": "0.9.3"
+  }
+}
